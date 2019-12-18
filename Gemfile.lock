@@ -1,0 +1,22 @@
+PATH
+  remote: .
+  specs:
+    omniauth-domain-group (1.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (11.0.1)
+    rake (10.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.16)
+  byebug (~> 11)
+  omniauth-domain-group!
+  rake (~> 10.0)
+
+BUNDLED WITH
+   1.16.6
