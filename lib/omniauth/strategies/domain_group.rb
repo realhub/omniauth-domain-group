@@ -37,13 +37,14 @@ module OmniAuth
              audience: 'api.domain.com.au'
 
       uid do
-        "fakeID"
+        raw_info.dig("user_info", "hagrid_account_id")
       end
 
       info do
         {
-          name: "Fake Name",
-          email: "Fake Email",
+          name: raw_info.dig("user_info", "name"),
+          username: raw_info.dig("user_info", "preferred_username"),
+          image: raw_info.dig("user_info", "picture"),
         }
       end
 
@@ -60,7 +61,12 @@ module OmniAuth
       def raw_info
         return @raw_info if @raw_info
 
-        @raw_info ||= {}
+        user_info_url = "https://auth.domain.com.au/v1/connect/userinfo"
+        user_info = JSON.parse(access_token.get(user_info_url).body)
+
+        @raw_info ||= {
+          "user_info" => user_info || {},
+        }
       end
     end
   end
