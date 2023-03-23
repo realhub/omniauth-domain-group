@@ -54,6 +54,21 @@ module OmniAuth
         }
       end
 
+      # Overrride client to merge in site based on sandbox option
+      def client
+        # Merge in authorize url if supplied
+        options.authorize_params[:clientId] = options.client_id
+        options.authorize_params[:redirect] = callback_url
+        options.client_options[:authorize_url] = options.authorize_url if options.authorize_url.present?
+        options.client_options[:site] = options.site if options.site.present?
+
+        ::OAuth2::Client.new(
+          options.client_id,
+          options.client_secret,
+          deep_symbolize(options.client_options)
+        )
+      end
+
       def callback_url
         options[:redirect_uri] || (full_host + script_name + callback_path)
       end
